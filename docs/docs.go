@@ -16,12 +16,37 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/books": {
+        "/v1/books": {
             "get": {
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "books_v1"
                 ],
                 "summary": "get all books",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -60,6 +85,26 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/main.book"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -78,7 +123,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/books/{id}": {
+        "/v1/books/{id}": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -97,6 +142,26 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -108,6 +173,12 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "type": "string"
                         }
@@ -132,6 +203,26 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -162,7 +253,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/queries": {
+        "/v1/queries": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -177,14 +268,34 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "MandateQuery1",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory query 1",
                         "name": "MandateQuery1",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "OptionalQuery1",
+                        "description": "Optional query 1",
                         "name": "OptionalQuery1",
                         "in": "query"
                     }
@@ -205,12 +316,63 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v2/books": {
+        "/v2/books": {
             "get": {
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "books_v2"
                 ],
                 "summary": "get all books",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 2",
+                        "name": "MandateHeader2",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 3",
+                        "name": "MandateHeader3",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 2",
+                        "name": "OptionalHeader2",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 3",
+                        "name": "OptionalHeader3",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -233,9 +395,6 @@ const docTemplate = `{
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "books_v2"
                 ],
@@ -247,8 +406,54 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.book"
+                            "$ref": "#/definitions/main.book2"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 2",
+                        "name": "MandateHeader2",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 3",
+                        "name": "MandateHeader3",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 2",
+                        "name": "OptionalHeader2",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 3",
+                        "name": "OptionalHeader3",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -267,12 +472,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v2/books/{id}": {
+        "/v2/books/{id}": {
             "get": {
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
@@ -286,6 +488,52 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 2",
+                        "name": "MandateHeader2",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 3",
+                        "name": "MandateHeader3",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 2",
+                        "name": "OptionalHeader2",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 3",
+                        "name": "OptionalHeader3",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -297,6 +545,12 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "type": "string"
                         }
@@ -321,6 +575,52 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 2",
+                        "name": "MandateHeader2",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 3",
+                        "name": "MandateHeader3",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional header 1",
+                        "name": "OptionalHeader1",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 2",
+                        "name": "OptionalHeader2",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optinal header 3",
+                        "name": "OptionalHeader3",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -351,7 +651,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v2/queries": {
+        "/v2/queries": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -366,40 +666,68 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "MandateQuery1",
+                        "description": "Authorization token",
+                        "name": "AuthToken",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 1",
+                        "name": "MandateHeader1",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 2",
+                        "name": "MandateHeader2",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory header 3",
+                        "name": "MandateHeader3",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Mandatory query 1",
                         "name": "MandateQuery1",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "MandateQuery1",
+                        "description": "Mandatory query 2",
                         "name": "MandateQuery2",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "MandateQuery1",
+                        "description": "Mandatory query 3",
                         "name": "MandateQuery3",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "OptionalQuery1",
+                        "description": "Optional query 1",
                         "name": "OptionalQuery1",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "OptionalQuery1",
+                        "description": "Optional query 2",
                         "name": "OptionalQuery2",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "OptionalQuery1",
+                        "description": "Optional query 3",
                         "name": "OptionalQuery3",
                         "in": "query"
                     }
@@ -466,6 +794,11 @@ const docTemplate = `{
         },
         "main.book": {
             "type": "object",
+            "required": [
+                "author",
+                "id",
+                "title"
+            ],
             "properties": {
                 "author": {
                     "type": "string"
@@ -480,6 +813,12 @@ const docTemplate = `{
         },
         "main.book2": {
             "type": "object",
+            "required": [
+                "author",
+                "id",
+                "isbn",
+                "title"
+            ],
             "properties": {
                 "author": {
                     "type": "string"

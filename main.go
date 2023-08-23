@@ -16,16 +16,16 @@ import (
 )
 
 type book struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
+	ID     string `json:"id" binding:"required"`
+	Title  string `json:"title" binding:"required"`
+	Author string `json:"author" binding:"required"`
 }
 
 type book2 struct {
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author"`
-	ISBN   string `json:"isbn"`
+	ID     int    `json:"id" binding:"required"`
+	Title  string `json:"title" binding:"required"`
+	Author string `json:"author" binding:"required"`
+	ISBN   string `json:"isbn" binding:"required"`
 }
 
 type Headersv1 struct {
@@ -58,6 +58,12 @@ type QueryParamsv2 struct {
 	OptionalQuery3 string `header:"OptionalQuery3" binding:"-"`
 }
 
+type IError struct {
+	Field string
+	Tag   string
+	Value string
+}
+
 var books = []book{
 	{ID: "1", Title: "In Search of Lost Time", Author: "Marcel Proust"},
 	{ID: "2", Title: "The Great Gatsby", Author: "F. Scott Fitzgerald"},
@@ -73,8 +79,12 @@ var books2 = []book2{
 // @Summary get all books
 // @Success 200 {array} book
 // @Failure 400 {string} error
-// @Router  /api/v1/books [get]
+// @Router /v1/books [get]
 // @Tags books_v1
+// @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param OptionalHeader1 header string false "Optional header 1"
 func getBooks(c *gin.Context) {
 	if !headerValidation(c) {
 		return
@@ -85,8 +95,16 @@ func getBooks(c *gin.Context) {
 // @Summary get all books
 // @Success 200 {array} book2
 // @Failure 400 {string} error
-// @Router  /api/v2/books [get]
+// @Router /v2/books [get]
 // @Tags books_v2
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param MandateHeader2  header string true "Mandatory header 2"
+// @Param MandateHeader3  header string true "Mandatory header 3"
+// @Param OptionalHeader1 header string false "Optional header 1"
+// @Param OptionalHeader2 header string false "Optinal header 2"
+// @Param OptionalHeader3 header string false "Optinal header 3"
+// @Produce json
 func getBooksv2(c *gin.Context) {
 	if !headerValidation(c) {
 		return
@@ -96,51 +114,72 @@ func getBooksv2(c *gin.Context) {
 
 // GetBookByID godoc
 // @Summary queries API
-// @Param MandateQuery1 query string true "MandateQuery1"
-// @Param OptionalQuery1 query string false "OptionalQuery1"
-// @Router  /api/v1/queries [get]
+// @Router /v1/queries [get]
 // @Success 200 {object} QueryParamsv1
 // @Failure 400 {string} error
 // @Tags queries
 // @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param OptionalHeader1 header string false "Optional header 1"
+// @Param MandateQuery1 query string true "Mandatory query 1"
+// @Param OptionalQuery1 query string false "Optional query 1"
 // @Accept json
 func getQueriesv1(c *gin.Context) {
-	headerValidation(c)
-	queryValidation(c)
+	if !headerValidation(c) {
+		return
+	}
+	if !queryValidation(c) {
+		return
+	}
 	c.IndentedJSON(http.StatusOK, c.Request.URL.Query())
 }
 
 // GetBookByID godoc
 // @Summary queries API
-// @Param MandateQuery1 query string true "MandateQuery1"
-// @Param MandateQuery2 query string true "MandateQuery1"
-// @Param MandateQuery3 query string true "MandateQuery1"
-// @Param OptionalQuery1 query string false "OptionalQuery1"
-// @Param OptionalQuery2 query string false "OptionalQuery1"
-// @Param OptionalQuery3 query string false "OptionalQuery1"
-// @Router  /api/v2/queries [get]
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param MandateHeader2 header string true "Mandatory header 2"
+// @Param MandateHeader3 header string true "Mandatory header 3"
+// @Param MandateQuery1 query string true "Mandatory query 1"
+// @Param MandateQuery2 query string true "Mandatory query 2"
+// @Param MandateQuery3 query string true "Mandatory query 3"
+// @Param OptionalQuery1 query string false "Optional query 1"
+// @Param OptionalQuery2 query string false "Optional query 2"
+// @Param OptionalQuery3 query string false "Optional query 3"
+// @Router /v2/queries [get]
 // @Success 200 {object} QueryParamsv2
 // @Failure 400 {string} error
 // @Tags queries
 // @Produce json
 // @Accept json
 func getQueriesv2(c *gin.Context) {
-	headerValidation(c)
-	queryValidation(c)
+	if !headerValidation(c) {
+		return
+	}
+	if !queryValidation(c) {
+		return
+	}
 	c.IndentedJSON(http.StatusOK, c.Request.URL.Query())
 }
 
 // GetBookByID godoc
 // @Summary get a book by ID
 // @Param id path string true "Book id"
-// @Router  /api/v1/books/{id} [get]
+// @Router /v1/books/{id} [get]
 // @Success 200 {object} book
 // @Failure 400 {string} error
+// @Failure 404 {string} error
 // @Tags books_v1
 // @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param OptionalHeader1 header string false "Optional header 1"
 // @Accept json
 func bookById(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	id := c.Param("id")
 	book, err := getBookById(id)
@@ -156,20 +195,29 @@ func bookById(c *gin.Context) {
 // GetBookByID godoc
 // @Summary get a book by ID
 // @Param id path string true "Book id"
-// @Router  /api/v2/books/{id} [get]
+// @Router /v2/books/{id} [get]
 // @Success 200 {object} book2
 // @Failure 400 {string} error
+// @Failure 404 {string} error
 // @Tags books_v2
-// @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param MandateHeader2  header string true "Mandatory header 2"
+// @Param MandateHeader3  header string true "Mandatory header 3"
+// @Param OptionalHeader1 header string false "Optional header 1"
+// @Param OptionalHeader2 header string false "Optinal header 2"
+// @Param OptionalHeader3 header string false "Optinal header 3"
 // @Accept json
 func bookByIdv2(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	book, err := getBookByIdv2(id)
 
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book with ID " + c.Param("id") + " not found."})
 		return
 	}
 
@@ -209,16 +257,21 @@ func removeBookByIdv2(bookID int) (isRemoved bool) {
 // DeleteBookByID godoc
 // @Summary delete a book by ID
 // @Param id path string true "Book id"
-// @Router  /api/v1/books/{id} [delete]
+// @Router /v1/books/{id} [delete]
 // @Success 200 {object} book
 // @Failure 400 {string} error
-// @Failure 409 {string} true "Unable to delete book"
 // @Failure 404 {string} true "Book not found"
+// @Failure 409 {string} true "Unable to delete book"
 // @Tags books_v1
 // @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param OptionalHeader1 header string false "Optional header 1"
 // @Accept json
 func deleteBookById(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	id := c.Param("id")
 	book, err := getBookById(id)
@@ -241,22 +294,31 @@ func deleteBookById(c *gin.Context) {
 // DeleteBookByID godoc
 // @Summary delete a book by ID
 // @Param id path string true "Book id"
-// @Router  /api/v2/books/{id} [delete]
+// @Router /v2/books/{id} [delete]
 // @Success 200 {object} book2
 // @Failure 400 {string} error
-// @Failure 409 {string} true "Unable to delete book"
 // @Failure 404 {string} true "Book not found"
+// @Failure 409 {string} true "Unable to delete book"
 // @Tags books_v2
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param MandateHeader2  header string true "Mandatory header 2"
+// @Param MandateHeader3  header string true "Mandatory header 3"
+// @Param OptionalHeader1 header string false "Optional header 1"
+// @Param OptionalHeader2 header string false "Optinal header 2"
+// @Param OptionalHeader3 header string false "Optinal header 3"
 // @Produce json
 // @Accept json
 func deleteBookByIdv2(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	book, err := getBookByIdv2(id)
 
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book with ID " + c.Param("id") + " not found."})
 		return
 	}
 
@@ -267,7 +329,7 @@ func deleteBookByIdv2(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, book)
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Book with ID " + strconv.Itoa(book.ID) + " was deleted successfully", "book": book})
 }
 
 func getBookById(id string) (*book, error) {
@@ -295,16 +357,22 @@ func getBookByIdv2(id int) (*book2, error) {
 // @Success 201 {object} book
 // @Failure 400 {string} error
 // @Param book body book true "Book data"
-// @Router  /api/v1/books [post]
+// @Router /v1/books [post]
 // @Tags books_v1
 // @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param OptionalHeader1 header string false "Optional header 1"
 // @Accept json
 func createBook(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	var newBook book
 
 	if err := c.BindJSON(&newBook); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid datatype"})
 		return
 	}
 
@@ -316,17 +384,26 @@ func createBook(c *gin.Context) {
 // @Summary create a new book
 // @Success 201 {object} book2
 // @Failure 400 {string} error
-// @Param book body book true "Book data"
-// @Router  /api/v2/books [post]
+// @Param book body book2 true "Book data"
+// @Router /v2/books [post]
 // @Tags books_v2
-// @Produce json
+// @Param AuthToken header string true "Authorization token"
+// @Param MandateHeader1 header string true "Mandatory header 1"
+// @Param MandateHeader2  header string true "Mandatory header 2"
+// @Param MandateHeader3  header string true "Mandatory header 3"
+// @Param OptionalHeader1 header string false "Optional header 1"
+// @Param OptionalHeader2 header string false "Optinal header 2"
+// @Param OptionalHeader3 header string false "Optinal header 3"
 // @Accept json
 func createBookv2(c *gin.Context) {
-	headerValidation(c)
+	if !headerValidation(c) {
+		return
+	}
 
 	var newBook book2
 
 	if err := c.BindJSON(&newBook); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -353,20 +430,21 @@ func headerValidation(c *gin.Context) (vstatus bool) {
 	return true
 }
 
-func queryValidation(c *gin.Context) {
+func queryValidation(c *gin.Context) (vstatus bool) {
 	var queryParamsv1 QueryParamsv1
 	var queryParamsv2 QueryParamsv2
 	if strings.Contains(c.Request.URL.Path, "v1") {
 		if err := c.ShouldBindQuery(&queryParamsv1); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			return false
 		}
 	} else {
 		if err := c.ShouldBindQuery(&queryParamsv2); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			c.JSON(http.StatusBadRequest, err.Error())
+			return false
 		}
 	}
+	return true
 }
 
 // @title Books API

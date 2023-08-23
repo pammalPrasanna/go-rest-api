@@ -35,6 +35,10 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - author
+    - id
+    - title
     type: object
   main.book2:
     properties:
@@ -46,14 +50,36 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - author
+    - id
+    - isbn
+    - title
     type: object
 info:
   contact: {}
   description: Books API documentation
   title: Books API
 paths:
-  /api/v1/books:
+  /v1/books:
     get:
+      parameters:
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      produces:
+      - application/json
       responses:
         "200":
           description: OK
@@ -78,6 +104,20 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/main.book'
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
       produces:
       - application/json
       responses:
@@ -92,7 +132,7 @@ paths:
       summary: create a new book
       tags:
       - books_v1
-  /api/v1/books/{id}:
+  /v1/books/{id}:
     delete:
       consumes:
       - application/json
@@ -101,6 +141,20 @@ paths:
         in: path
         name: id
         required: true
+        type: string
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
         type: string
       produces:
       - application/json
@@ -133,6 +187,20 @@ paths:
         name: id
         required: true
         type: string
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
       produces:
       - application/json
       responses:
@@ -144,20 +212,38 @@ paths:
           description: Bad Request
           schema:
             type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
       summary: get a book by ID
       tags:
       - books_v1
-  /api/v1/queries:
+  /v1/queries:
     get:
       consumes:
       - application/json
       parameters:
-      - description: MandateQuery1
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      - description: Mandatory query 1
         in: query
         name: MandateQuery1
         required: true
         type: string
-      - description: OptionalQuery1
+      - description: Optional query 1
         in: query
         name: OptionalQuery1
         type: string
@@ -175,8 +261,43 @@ paths:
       summary: queries API
       tags:
       - queries
-  /api/v2/books:
+  /v2/books:
     get:
+      parameters:
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Mandatory header 2
+        in: header
+        name: MandateHeader2
+        required: true
+        type: string
+      - description: Mandatory header 3
+        in: header
+        name: MandateHeader3
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      - description: Optinal header 2
+        in: header
+        name: OptionalHeader2
+        type: string
+      - description: Optinal header 3
+        in: header
+        name: OptionalHeader3
+        type: string
+      produces:
+      - application/json
       responses:
         "200":
           description: OK
@@ -200,9 +321,39 @@ paths:
         name: book
         required: true
         schema:
-          $ref: '#/definitions/main.book'
-      produces:
-      - application/json
+          $ref: '#/definitions/main.book2'
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Mandatory header 2
+        in: header
+        name: MandateHeader2
+        required: true
+        type: string
+      - description: Mandatory header 3
+        in: header
+        name: MandateHeader3
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      - description: Optinal header 2
+        in: header
+        name: OptionalHeader2
+        type: string
+      - description: Optinal header 3
+        in: header
+        name: OptionalHeader3
+        type: string
       responses:
         "201":
           description: Created
@@ -215,7 +366,7 @@ paths:
       summary: create a new book
       tags:
       - books_v2
-  /api/v2/books/{id}:
+  /v2/books/{id}:
     delete:
       consumes:
       - application/json
@@ -224,6 +375,38 @@ paths:
         in: path
         name: id
         required: true
+        type: string
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Mandatory header 2
+        in: header
+        name: MandateHeader2
+        required: true
+        type: string
+      - description: Mandatory header 3
+        in: header
+        name: MandateHeader3
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      - description: Optinal header 2
+        in: header
+        name: OptionalHeader2
+        type: string
+      - description: Optinal header 3
+        in: header
+        name: OptionalHeader3
         type: string
       produces:
       - application/json
@@ -256,8 +439,38 @@ paths:
         name: id
         required: true
         type: string
-      produces:
-      - application/json
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Mandatory header 2
+        in: header
+        name: MandateHeader2
+        required: true
+        type: string
+      - description: Mandatory header 3
+        in: header
+        name: MandateHeader3
+        required: true
+        type: string
+      - description: Optional header 1
+        in: header
+        name: OptionalHeader1
+        type: string
+      - description: Optinal header 2
+        in: header
+        name: OptionalHeader2
+        type: string
+      - description: Optinal header 3
+        in: header
+        name: OptionalHeader3
+        type: string
       responses:
         "200":
           description: OK
@@ -267,38 +480,62 @@ paths:
           description: Bad Request
           schema:
             type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
       summary: get a book by ID
       tags:
       - books_v2
-  /api/v2/queries:
+  /v2/queries:
     get:
       consumes:
       - application/json
       parameters:
-      - description: MandateQuery1
+      - description: Authorization token
+        in: header
+        name: AuthToken
+        required: true
+        type: string
+      - description: Mandatory header 1
+        in: header
+        name: MandateHeader1
+        required: true
+        type: string
+      - description: Mandatory header 2
+        in: header
+        name: MandateHeader2
+        required: true
+        type: string
+      - description: Mandatory header 3
+        in: header
+        name: MandateHeader3
+        required: true
+        type: string
+      - description: Mandatory query 1
         in: query
         name: MandateQuery1
         required: true
         type: string
-      - description: MandateQuery1
+      - description: Mandatory query 2
         in: query
         name: MandateQuery2
         required: true
         type: string
-      - description: MandateQuery1
+      - description: Mandatory query 3
         in: query
         name: MandateQuery3
         required: true
         type: string
-      - description: OptionalQuery1
+      - description: Optional query 1
         in: query
         name: OptionalQuery1
         type: string
-      - description: OptionalQuery1
+      - description: Optional query 2
         in: query
         name: OptionalQuery2
         type: string
-      - description: OptionalQuery1
+      - description: Optional query 3
         in: query
         name: OptionalQuery3
         type: string
