@@ -1,0 +1,99 @@
+basePath: /api/v1
+definitions:
+  main.book:
+    properties:
+      author:
+        type: string
+      id:
+        type: string
+      quantity:
+        type: integer
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Books API documentation
+  title: Books API
+  version: "1.0"
+paths:
+  /books:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.book'
+            type: array
+      summary: get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/main.book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.book'
+      summary: create a new book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.book'
+        "404":
+          description: Book not found
+          schema:
+            type: string
+        "409":
+          description: Unable to delete book
+          schema:
+            type: string
+      summary: delete a book by ID
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.book'
+      summary: get a book by ID
+      tags:
+      - books
+swagger: "2.0"
